@@ -2,6 +2,31 @@
 
 This project is setup to reproduce [Issue #25](https://github.com/spotify/dockerfile-maven/issues/25) from the [dockerfile-maven](https://github.com/spotify/dockerfile-maven) project.
 
+## Root Cause / Explanation
+[Matt Brown](https://github.com/mattnworb) [suggested](https://github.com/spotify/dockerfile-maven/issues/25#issuecomment-310667051) the 
+`**` at the top of the old `.dockerignore` was keeping the `Dockerfile` from being sent in the context. Further testing proved this out.
+Removing the `**` ignore everything line immediately made the plugin work just fine. 🤦
+
+### Old .dockerignore
+```
+** <--- This was the issue
+!target/application.jar
+```
+
+The `docker` client interprets this to ignore everything exception the `target/application.jar` but still includes 
+the `Dockerfile`. The `dockerfile-maven` plugin process interprets this more logicially correct, 
+as in it ignores *everything* but the single `target/application.jar` including the `Dockerfile` 
+
+### Updated .dockerignore
+If for some reason you wanted to keep the `**` ignore everything line, you could create a file like so:
+```
+**
+!Dockerfile
+!target/application.jar
+```
+
+Otherwise, just remove the `**` and move to more explicit ignores.
+
 ## My Test Environment
 
 - **OS:** MacOS Sierra 10.12.5
