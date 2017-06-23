@@ -13,9 +13,9 @@ Removing the `**` ignore everything line immediately made the plugin work just f
 !target/application.jar
 ```
 
-The `docker` client interprets this to ignore everything exception the `target/application.jar` but still includes 
-the `Dockerfile`. The `dockerfile-maven` plugin process interprets this more logicially correct, 
-as in it ignores *everything* but the single `target/application.jar` including the `Dockerfile` 
+The `docker` client interprets this to ignore everything except the `target/application.jar` but still implicitly includes 
+the `Dockerfile`. The `dockerfile-maven` plugin process interprets this more explicitly, 
+as in it ignores *everything* but the single `target/application.jar`, including the `Dockerfile` 
 
 ### Updated .dockerignore
 If for some reason you wanted to keep the `**` ignore everything line, you could create a file like so:
